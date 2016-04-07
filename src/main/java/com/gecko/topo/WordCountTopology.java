@@ -27,7 +27,7 @@ public class WordCountTopology {
 
         // create the config, set the words file
         Config config = new Config();
-        config.put("wordsFile", args[0]);
+        config.put("wordsfile", args[0]);
         config.setDebug(false);
         config.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, SPOUT_MAX_COUNT);
 

@@ -6,7 +6,8 @@ import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
 import com.gecko.topo.bolts.WordCounter;
 import com.gecko.topo.bolts.WordNormalizer;
-import com.gecko.topo.spouts.WordReader;
+import com.gecko.topo.spouts.FileSpoutReader;
+//import com.gecko.topo.spouts.WordReader;
 
 /**
  * Created by hlieu on 4/4/16.
@@ -21,7 +22,9 @@ public class WordCountTopology {
 
         // create the topology
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("word-reader", new WordReader());
+
+        // file-reader
+        builder.setSpout("word-reader", new FileSpoutReader());
         builder.setBolt("word-normalizer", new WordNormalizer()).shuffleGrouping("word-reader");
         builder.setBolt("word-counter", new WordCounter(), BOLT_PARALLEL_WORD_COUNT).fieldsGrouping("word-normalizer", new Fields("word"));
 

@@ -10,12 +10,14 @@ import backtype.storm.tuple.Values;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by hlieu on 04/3/16.
  */
-public class WordReader extends BaseRichSpout {
+public class FileSpoutReader extends BaseRichSpout {
     private SpoutOutputCollector collector;
     private FileReader fileReader;
     private boolean completed = false;
@@ -35,12 +37,15 @@ public class WordReader extends BaseRichSpout {
         }
 
         String str;
-        BufferedReader reader = new BufferedReader(fileReader);
+        BufferedReader reader = new BufferedReader(this.fileReader);
         try {
-            // read all lines
+            StringBuffer sb = new StringBuffer();
             while( (str = reader.readLine()) != null) {
+                //sb.append(str + "\n");
                 this.collector.emit(new Values(str), str);
             }
+
+            //this.collector.emit(new Values(sb.toString()), "all-lines");
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {

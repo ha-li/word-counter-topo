@@ -33,7 +33,7 @@ public class WordCounter extends BaseBasicBolt {
     public void declareOutputFields(OutputFieldsDeclarer declarer) {}
 
     public void execute(Tuple input, BasicOutputCollector collector) {
-        String str = input.getString(0);
+        String str = input.getStringByField("word");
 
         if(!counters.containsKey(str)) {
             counters.put(str, 1);

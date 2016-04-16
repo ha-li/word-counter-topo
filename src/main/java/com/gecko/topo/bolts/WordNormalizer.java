@@ -1,5 +1,6 @@
 package com.gecko.topo.bolts;
 
+import backtype.storm.task.OutputCollector;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
@@ -14,7 +15,7 @@ public class WordNormalizer extends BaseBasicBolt {
     public void cleanup() {}
 
     public void execute(Tuple input, BasicOutputCollector collector) {
-        String sentence = input.getString(0);
+        String sentence = input.getStringByField("line");
         String[] words = sentence.split(" ");
         for(String word : words) {
             word = word.trim();
@@ -23,8 +24,10 @@ public class WordNormalizer extends BaseBasicBolt {
                 collector.emit(new Values(word));
             }
         }
-        //collector.ack(words);
+        //collector.ack(input);
     }
+
+
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {declarer.declare(new Fields("word")); }
 }
